@@ -3,7 +3,7 @@ var router = express.Router();
 var mysql = require('../mysql')
 
 /* GET home page. */
-router.get('/data', async function (req, res, next) {
+router.get('/data', async function (req, res) {
 
   const data = {}
 
@@ -20,21 +20,22 @@ router.get('/data', async function (req, res, next) {
 
 });
 
-router.post('/lulz', async function (req, res, next) {
+router.post('/lulz', async function (req, res) {
 
 
-  const {rows, columns} = req.body
+  const rows = Number.parseInt(req.body.rows)
+  const columns = Number.parseInt(req.body.columns)
 
-  if (rows <= 0 || columns <= 0) {
+  if (!rows || !columns || rows <= 0 || columns <= 0) {
 
-    await mysql.query(`INSERT INTO FalsyData (rows, clmns) VALUES (${rows}, ${columns})`, async function (error, results) {
+    await mysql.query(`INSERT INTO FalsyData (rows, clmns) VALUES (${req.body.rows}, ${req.body.rows})`, async function (error) {
       if (error) throw error;
-      return res.json({error: true, message: 'You have negative sizes'})
+      return res.json({error: true, message: 'You have invalid inputs'})
     });
 
   }
 
-  await mysql.query(`INSERT INTO CorrectData (rows, clmns) VALUES (${rows}, ${columns})`, async function (error, results) {
+  await mysql.query(`INSERT INTO CorrectData (rows, clmns) VALUES (${rows}, ${columns})`, async function (error) {
     if (error) throw error;
     return res.json({success: true, message: 'Building table'})
   });
