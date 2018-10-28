@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import TableOne from './TableOne'
 
 class TableContstructor extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this)
 
-    this.state = {columns: '0', rows: '0'}
+    this.state = {constant: '1', checkedConstant: 1}
   }
 
   async componentDidMount() {
@@ -20,46 +21,38 @@ class TableContstructor extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    alert('You set ' + this.state.columns + ' column size and ' + this.state.rows + ' row size')
-    const columns = parseInt(this.state.columns)
-    const rows = parseInt(this.state.rows)
-    if (isNaN(columns))
-      return alert(this.state.columns + 'is not correct value')
-    if (isNaN(rows))
-      return alert(this.state.rows + 'is not correct value')
+    const constant = parseInt(this.state.constant)
+    if (isNaN(constant))
+      alert(this.state.constant + 'is not correct value')
     const resp = await fetch('/lulz', {
       method: 'POST', headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }, body: JSON.stringify({rows, columns})
+      }, body: JSON.stringify({constant: this.state.constant})
     }).then(x => x.json())
     if (resp.error) {
-      return alert(resp.message)
+      alert(resp.message)
     } else {
-      return alert(resp.message)
+      this.setState({...this.state, checkedConstant: constant})
     }
-
   }
 
   render() {
     return (
       <div>
 
-        <div>
+        <div className='m-4'>
           <div className="form-group">
-            <label>Enter rows of table</label>
-            <input type="number" className="form-control" value={this.state.rows}
-                   onChange={e => this.setState({rows: (e.target.value)})}/>
-          </div>
-          <div className="form-group">
-            <label>Enter columns of table</label>
-            <input type="number" className="form-control" value={this.state.columns}
-                   onChange={e => this.setState({columns: (e.target.value)})}/>
+            <label>Enter constant for tables</label>
+            <input type="number" className="form-control" value={this.state.constant}
+                   onChange={e => this.setState({constant: (e.target.value)})}/>
           </div>
           <button className="btn btn-primary btn-block" onClick={(e) => this.handleSubmit(e)}>Create
           </button>
 
         </div>
+
+        <TableOne constant={this.state.checkedConstant}/>
 
         <div>
 

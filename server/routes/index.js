@@ -19,22 +19,19 @@ router.get('/data', async (req, res) => {
 });
 
 router.post('/lulz', async (req, res) => {
-  const rows = Number.parseInt(req.body.rows);
-  const columns = Number.parseInt(req.body.columns);
+  const constant = Number.parseInt(req.body.constant);
 
-  if (!rows || !columns || rows <= 0 || columns <= 0) {
+  if (!constant || constant <= 0) {
     await mysql.query(
-      `INSERT INTO FalsyData (rows, clmns) VALUES (${req.body.rows}, ${
-        req.body.rows
-      })`,
+      `INSERT INTO FalsyData (constant) VALUES (${req.body.constant})`,
       async error => {
         if (error) throw error;
-        return res.json({ error: true, message: 'You have invalid inputs' });
+        return res.json({ error: true, message: 'You have invalid input' });
       },
     );
   } else {
     await mysql.query(
-      `INSERT INTO CorrectData (rows, clmns) VALUES (${rows}, ${columns})`,
+      `INSERT INTO CorrectData (constant) VALUES (${constant})`,
       async error => {
         if (error) throw error;
         return res.json({ success: true, message: 'Building table' });
