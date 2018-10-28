@@ -1,45 +1,46 @@
-var express = require('express');
-var router = express.Router();
-var mysql = require('../mysql')
+import { Router } from 'express';
+import mysql from '../mysql';
+
+const router = Router();
 
 /* GET home page. */
-router.get('/data', async function (req, res) {
+router.get('/data', async (req, res) => {
+  const data = {};
 
-  const data = {}
-
-  await mysql.query('SELECT * FROM CorrectData', async function (error, results) {
+  await mysql.query('SELECT * FROM CorrectData', async (error, results) => {
     if (error) throw error;
-    data.correctData = results
-    await mysql.query('SELECT * FROM FalsyData', function (error, results) {
-      if (error) throw error;
-      data.falsyData = results
+    data.correctData = results;
+    await mysql.query('SELECT * FROM FalsyData', (errorFalsy, resultsFalsy) => {
+      if (errorFalsy) throw errorFalsy;
+      data.falsyData = resultsFalsy;
     });
-    return res.json(data)
+    return res.json(data);
   });
-
-
 });
 
-router.post('/lulz', async function (req, res) {
-
-
-  const rows = Number.parseInt(req.body.rows)
-  const columns = Number.parseInt(req.body.columns)
+router.post('/lulz', async (req, res) => {
+  const rows = Number.parseInt(req.body.rows);
+  const columns = Number.parseInt(req.body.columns);
 
   if (!rows || !columns || rows <= 0 || columns <= 0) {
-
-    await mysql.query(`INSERT INTO FalsyData (rows, clmns) VALUES (${req.body.rows}, ${req.body.rows})`, async function (error) {
-      if (error) throw error;
-      return res.json({error: true, message: 'You have invalid inputs'})
-    });
-
+    await mysql.query(
+      `INSERT INTO FalsyData (rows, clmns) VALUES (${req.body.rows}, ${
+        req.body.rows
+      })`,
+      async error => {
+        if (error) throw error;
+        return res.json({ error: true, message: 'You have invalid inputs' });
+      },
+    );
+  } else {
+    await mysql.query(
+      `INSERT INTO CorrectData (rows, clmns) VALUES (${rows}, ${columns})`,
+      async error => {
+        if (error) throw error;
+        return res.json({ success: true, message: 'Building table' });
+      },
+    );
   }
-
-  await mysql.query(`INSERT INTO CorrectData (rows, clmns) VALUES (${rows}, ${columns})`, async function (error) {
-    if (error) throw error;
-    return res.json({success: true, message: 'Building table'})
-  });
-
 });
 
-module.exports = router;
+export default router;
