@@ -4,11 +4,12 @@ import './TableThree.css'
 
 class TableThree extends Component {
 
-  row = (c, isEven) => {
+  row = (c, isEven, rowI) => {
     const ret = isEven ? [<div className='border smallCell h-100'>*</div>] : []
 
     for (let i = 0; i < c; i += 2)
-      ret.push(<div className='bigCell border flex-fill h-100'>*</div>)
+      ret.push(<div
+        className='bigCell border flex-fill h-100'>{(rowI === 0 && i === 2 * 2) ? 'четверта клітинка' : '*'}</div>)
     if (!isEven) {
       ret.push(<div className='border smallCell h-100'>*</div>)
     }
@@ -25,7 +26,7 @@ class TableThree extends Component {
     const trs = []
 
     for (let i = 0; i < c; i++)
-      trs.push(this.row(c, i % 2 === 0))
+      trs.push(this.row(c, i % 2 === 0, i))
 
 
     return (

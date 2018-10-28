@@ -3,11 +3,11 @@ import './TableFour.css'
 
 class TableFour extends Component {
 
-  row = (c, isEven) => {
+  row = (c, isEven, rowI) => {
     const ret = isEven ? [<div className='border smallCell w-100'>*</div>] : []
 
     for (let i = 0; i < c; i += 2)
-      ret.push(<div className='border bigCell w-100'>*</div>)
+      ret.push(<div className='border bigCell w-100'>{(rowI === 0 && i === 2 * 2) ? 'четверта клітинка' : '*'}</div>)
     if (!isEven) {
       ret.push(<div className='border smallCell w-100'>*</div>)
     }
@@ -24,7 +24,7 @@ class TableFour extends Component {
     const trs = []
 
     for (let i = 0; i < c; i++)
-      trs.push(this.row(c, i % 2 === 0))
+      trs.push(this.row(c, i % 2 === 0, i))
 
 
     return (

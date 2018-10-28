@@ -6,7 +6,7 @@ class TableOne extends Component {
 
 
   createTable = (c) => {
-    if(isNaN(c))
+    if (isNaN(c))
       return <div> error</div>
     if (c <= 1)
       return (
@@ -28,7 +28,7 @@ class TableOne extends Component {
         <td colSpan={c}>*</td>
       </tr>
       <tr>
-        <td rowSpan={c - 1}>*</td>
+        <td rowSpan={c - 1}>{c === 4 ? 'четверта клітинка' : '*'}</td>
         {childrenTable}
       </tr>
       </tbody>

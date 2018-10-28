@@ -26,7 +26,7 @@ class TableTwo extends Component {
       <tbody>
       <tr>
         <td rowSpan={c}>*</td>
-        <td colSpan={c - 1}>*</td>
+        <td colSpan={c - 1}>{c === 4 ? 'четверта клітинка' : '*'}</td>
 
       </tr>
 
