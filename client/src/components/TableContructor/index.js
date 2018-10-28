@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TableOne from './TableOne'
+import TableTwo from './TableTwo'
 
 class TableContstructor extends Component {
   constructor(props) {
@@ -53,6 +54,8 @@ class TableContstructor extends Component {
         </div>
 
         <TableOne constant={this.state.checkedConstant}/>
+        <br/>
+        <TableTwo constant={this.state.checkedConstant}/>
 
         <div>
 
