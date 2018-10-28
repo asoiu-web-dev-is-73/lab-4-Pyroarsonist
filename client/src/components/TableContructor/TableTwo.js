@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class TableOne extends Component {
+class TableTwo extends Component {
 
   // column - now
 
@@ -47,4 +47,4 @@ class TableOne extends Component {
   }
 }
 
-export default TableOne;
+export default TableTwo;
