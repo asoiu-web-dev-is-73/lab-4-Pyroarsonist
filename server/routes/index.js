@@ -7,37 +7,23 @@ const router = Router();
 router.get('/data', async (req, res) => {
   const data = {};
 
-  await mysql.query('SELECT * FROM CorrectData', async (error, results) => {
-    if (error) throw error;
-    data.correctData = results;
-    await mysql.query('SELECT * FROM FalsyData', (errorFalsy, resultsFalsy) => {
-      if (errorFalsy) throw errorFalsy;
-      data.falsyData = resultsFalsy;
-    });
-    return res.json(data);
-  });
+  data.correctData = await mysql.query('SELECT * FROM CorrectData');
+  data.falsyData = await mysql.query('SELECT * FROM FalsyData');
+  return res.json(data);
 });
 
-router.post('/lulz', async (req, res) => {
+router.post('/save', async (req, res) => {
   const constant = Number.parseInt(req.body.constant);
 
   if (!constant || constant <= 0) {
     await mysql.query(
-      `INSERT INTO FalsyData (constant) VALUES (${req.body.constant})`,
-      async error => {
-        if (error) throw error;
-        return res.json({ error: true, message: 'You have invalid input' });
-      },
+      `INSERT INTO FalsyData (constant) VALUES (${req.body.constant ||
+        'NULL'})`,
     );
-  } else {
-    await mysql.query(
-      `INSERT INTO CorrectData (constant) VALUES (${constant})`,
-      async error => {
-        if (error) throw error;
-        return res.json({ success: true, message: 'Building table' });
-      },
-    );
+    return res.json({ error: true, message: 'You have invalid input' });
   }
+  await mysql.query(`INSERT INTO CorrectData (constant) VALUES (${constant})`);
+  return res.json({ success: true, message: 'Building table' });
 });
 
 export default router;

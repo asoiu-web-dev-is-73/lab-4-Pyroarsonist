@@ -27,7 +27,7 @@ class TableContstructor extends Component {
     const constant = parseInt(this.state.constant)
     if (isNaN(constant))
       alert(this.state.constant + 'is not correct value')
-    const resp = await fetch('/lulz', {
+    const resp = await fetch('/save', {
       method: 'POST', headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ class TableContstructor extends Component {
           <div className="form-group">
             <label>Enter constant for tables</label>
             <input type="number" className="form-control" value={this.state.constant}
-                   onChange={e => this.setState({constant: (e.target.value)})}/>
+                   onChange={async e => this.setState({constant: (e.target.value)})}/>
           </div>
           <button className="btn btn-primary btn-block" onClick={(e) => this.handleSubmit(e)}>Create
           </button>
